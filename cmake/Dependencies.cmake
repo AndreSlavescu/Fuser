@@ -7,7 +7,7 @@ set(INSTALL_GTEST OFF CACHE BOOL "Install gtest." FORCE)
 set(BUILD_GMOCK ON CACHE BOOL "Build gmock." FORCE)
 set(gtest_hide_internal_symbols ON CACHE BOOL "Use symbol visibility" FORCE)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/third_party/googletest)
+add_subdirectory(${CMAKE_SOURCE_DIR}/submodules/nvfuser/third_party/googletest ${CMAKE_BINARY_DIR}/third_party/googletest)
 
 # We will not need to test benchmark lib itself.
 set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Disable benchmark testing as we don't need it.")
@@ -15,7 +15,7 @@ set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Disable benchmark testing as we don
 set(BENCHMARK_ENABLE_INSTALL OFF CACHE BOOL "Disable benchmark install to avoid overwriting vendor install.")
 
 if(NOT USE_SYSTEM_BENCHMARK)
-  add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../third_party/benchmark)
+  add_subdirectory(${CMAKE_SOURCE_DIR}/submodules/nvfuser/third_party/benchmark)
 else()
   add_library(benchmark SHARED IMPORTED)
   find_library(BENCHMARK_LIBRARY benchmark)
@@ -25,6 +25,9 @@ else()
   message("-- Found benchmark: ${BENCHMARK_LIBRARY}")
   set_property(TARGET benchmark PROPERTY IMPORTED_LOCATION ${BENCHMARK_LIBRARY})
 endif()
+
+find_package(Flatbuffers REQUIRED)
+include_directories(${FLATBUFFERS_INCLUDE_DIRS} $ENV{HOME}/local/include)
 
 # Cacheing variables to enable incremental build.
 # Without this is cross compiling we end up having to blow build directory

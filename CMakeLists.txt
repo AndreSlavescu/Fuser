@@ -52,6 +52,9 @@ set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 
 # CXX flags is necessary since https://github.com/pytorch/pytorch/issues/98093
 string(APPEND CMAKE_CXX_FLAGS " ${TORCH_CXX_FLAGS}")
+
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} $ENV{HOME}/local)
+
 include(cmake/FlatBuffers.cmake)
 include(cmake/Dependencies.cmake)
 
